@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import generatechatcompletion
+import os
 
 
 from flask import Flask, Response, request, jsonify
@@ -17,7 +18,8 @@ def stream_chat():
 
 if __name__ == '__main__':
     app.run(debug=True)
-    app.run(threaded=True, port=5000)
+    app.run(threaded=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    #app.run(threaded=True, port=5000)
 
 
 
