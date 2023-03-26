@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Chat</title>
+</head>
+<body>
+    <form id="chat-form">
+        <label for="consigne">Consigne :</label>
+        <input type="text" id="consigne" name="consigne" required>
+        <label for="texte">Texte :</label>
+        <input type="text" id="texte" name="texte" required>
+        <button type="submit">Envoyer</button>
+    </form>
+    <div id="response"></div>
+    <script>
+        document.getElementById("chat-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const consigne = document.getElementById("consigne").value;
+            const texte = document.getElementById("texte").value;
+            const responseDiv = document.getElementById("response");
+        
+            responseDiv.innerHTML = ""; // Clear the response div
+        
+            const formData = new FormData();
+            formData.append("consigne", consigne);
+            formData.append("texte", texte);
+        
+            const response = await fetch("https://mikianeopenaiapi.herokuapp.com/stream_chat", {
+            //const response = await fetch("http://127.0.0.1:5000/stream_chat", {   
+            //const response = await fetch("https://app.brightness-agency.com:5000/stream_chat", {   
+                method: "POST",
+                body: formData,
+            });
+        
+            const reader = response.body.getReader();
+            const textDecoder = new TextDecoder("utf-8");
+        
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+        
+                const chunk = textDecoder.decode(value);
+                responseDiv.innerHTML += chunk;
+            }
+        });        
+
+
+    </script>
+</body>
+</html>
