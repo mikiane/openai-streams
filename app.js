@@ -10,9 +10,9 @@ document.getElementById("chat-form").addEventListener("submit", async (event) =>
     formData.append("consigne", consigne);
     formData.append("texte", texte);
 
-    const response = await fetch("https://mikianeopenaiapi.herokuapp.com/stream_chat", {
+    // const response = await fetch("https://backend.brightness-agency.com/stream_chat", {
     //const response = await fetch("http://127.0.0.1:5000/stream_chat", {   
-    //const response = await fetch("https://app.brightness-agency.com:5000/stream_chat", {   
+    const response = await fetch("https://backend.brightness-agency.com/stream_chat", {   
         method: "POST",
         body: formData,
     });

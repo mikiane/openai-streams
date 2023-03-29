@@ -4,49 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Chat</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            max-width: 800px;
+        }
+        label {
+            font-weight: bold;
+        }
+        #consigne {
+            width: 100%;
+            text-align: center;
+        }
+        #texte {
+            width: 100%;
+            height: 200px;
+            resize: none;    
+        }
+        #response {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 1rem;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
     <form id="chat-form">
         <label for="consigne">Consigne :</label>
         <input type="text" id="consigne" name="consigne" required>
         <label for="texte">Texte :</label>
-        <input type="text" id="texte" name="texte" required>
+        <textarea id="texte" name="texte" required></textarea>
         <button type="submit">Envoyer</button>
     </form>
     <div id="response"></div>
-    <script>
-        document.getElementById("chat-form").addEventListener("submit", async (event) => {
-            event.preventDefault();
-            const consigne = document.getElementById("consigne").value;
-            const texte = document.getElementById("texte").value;
-            const responseDiv = document.getElementById("response");
-        
-            responseDiv.innerHTML = ""; // Clear the response div
-        
-            const formData = new FormData();
-            formData.append("consigne", consigne);
-            formData.append("texte", texte);
-        
-            const response = await fetch("https://mikianeopenaiapi.herokuapp.com/stream_chat", {
-            //const response = await fetch("http://127.0.0.1:5000/stream_chat", {   
-            //const response = await fetch("https://app.brightness-agency.com:5000/stream_chat", {   
-                method: "POST",
-                body: formData,
-            });
-        
-            const reader = response.body.getReader();
-            const textDecoder = new TextDecoder("utf-8");
-        
-            while (true) {
-                const { value, done } = await reader.read();
-                if (done) break;
-        
-                const chunk = textDecoder.decode(value);
-                responseDiv.innerHTML += chunk;
-            }
-        });        
-
-
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>
